@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: finance_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"          # host:container
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # dados persistem entre restarts
+      - ./db:/docker-entrypoint-initdb.d  # roda SQLs na 1ª inicialização
+
+volumes:
+  pgdata:
